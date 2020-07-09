@@ -1,0 +1,13 @@
+{
+    "name": "pavel-one/lara-log",
+    "description": "Laravel package for remote logging service log.lara.su",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pavel Zarubin",
+            "email": "pavel@orendat.ru"
+        }
+    ],
+    "require": {}
+}
