@@ -6,8 +6,18 @@
     "authors": [
         {
             "name": "Pavel Zarubin",
-            "email": "pavel@orendat.ru"
+            "email": "pavel@orendat.ru",
+            "homepage": "https://pavel.one",
+            "role": "Developer"
         }
     ],
-    "require": {}
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "LaraSU\\Logger\\": "src"
+        }
+    }
 }
