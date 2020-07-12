@@ -3,6 +3,10 @@
     "description": "Laravel package for remote logging service log.lara.su",
     "type": "library",
     "license": "MIT",
+    "support": {
+        "issues": "https://github.com/pavel-one/LaraLog/issues",
+        "source": "https://github.com/pavel-one/LaraLog"
+    },
     "authors": [
         {
             "name": "Pavel Zarubin",

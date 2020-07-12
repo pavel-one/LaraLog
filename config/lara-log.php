@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'test' => 'test'
+    'login' => '',
+    'token' => '',
 ];

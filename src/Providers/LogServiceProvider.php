@@ -4,7 +4,7 @@ namespace LaraSU\Logger\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App;
-use LaraSU\Logger\Services\LogManager;
+use LaraSU\Logger\Services\LaraLog;
 
 class LogServiceProvider extends ServiceProvider
 {
@@ -23,8 +23,8 @@ class LogServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        App::singleton('log', function () {
-            return new LogManager($this->app);
+        App::singleton('LaraLog', static function () {
+            return new LaraLog(config('lara-log'));
         });
     }
 
