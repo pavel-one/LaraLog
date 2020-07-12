@@ -2,6 +2,7 @@
 
 namespace LaraSU\Logger\Facades;
 
+use Illuminate\Support\Facades\App;
 use LaraSU\Logger\Services\LaraLog as Service;
 
 class LaraLog
@@ -15,7 +16,7 @@ class LaraLog
      */
     public static function channel(string $channel): Service
     {
-        return \App::get('LaraLog')->setChannel($channel);
+        return App::get('LaraLog')->setChannel($channel);
     }
 
     /**
