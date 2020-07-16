@@ -2,6 +2,9 @@
 
 namespace LaraSU\Logger\Services;
 
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
 class LaraLog
@@ -11,7 +14,12 @@ class LaraLog
     protected $version;
     protected $url;
 
+    protected $client;
+
+    protected $queueLogs;
+
     public $channel;
+    public $sync;
 
     public function __construct(array $config)
     {
@@ -23,9 +31,16 @@ class LaraLog
             throw new RuntimeException('Не задан токен для обращения на сервис'); //TODO: Translate
         }
 
-        $this->version = $config['token'] ?? '1.0';
+        $this->version = $config['version'] ?? '1.0';
         $this->url = $config['url'] ?? 'https://log.lara.su/api/';
         $this->channel = null;
+        $this->sync = $config['sync'] ?? false;
+
+        $this->queueLogs = [];
+
+        $this->client = new Client([
+            'base_uri' => $this->url
+        ]);
     }
 
     public function setChannel($channel): LaraLog
@@ -35,53 +50,122 @@ class LaraLog
         return $this;
     }
 
-    public function request(array $data)
+    /**
+     * Отправляет очередь логов на сервер
+     *
+     * @return ResponseInterface|null
+     */
+    public function send()
     {
-        $string = http_build_query($data);
+        if (!$this->queueLogs) {
+            return null;
+        }
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            "version" => $this->version,
+            "login" => $this->login,
+            "token" => $this->token
+        ];
+
+        $request = null;
+
+        try {
+            $request = $this->client->post('log', [
+                'headers' => $headers,
+                'body' => json_encode($this->queueLogs)
+            ]);
+        } catch (GuzzleException $e) {
+            //TODO: Сделать обработку
+        }
+
+        return $request;
     }
 
-    public function log(string $level, string $msg, array $data = []): bool
+    /**
+     * Добавляет в лог и отправляет при синхронной работе
+     *
+     * @param string $level
+     * @param string $msg
+     * @param array $data
+     * @return $this|ResponseInterface|null
+     */
+    public function log(string $level, string $msg, array $data = [])
     {
+        $this->addLog([
+            'message' => $msg,
+            'level' => $level,
+            'channel' => $this->channel,
+            'data' => $data
+        ]);
 
-        return true;
+        if ($this->sync) {
+            return $this->send();
+        }
+
+        return $this;
     }
 
-    public function emergency(string $msg, array $data = []): bool
+    /**
+     * Добавляет лог в очередь
+     *
+     * @param array $data
+     * @return $this
+     */
+    protected function addLog(array $data): self
+    {
+        $this->queueLogs[] = $data;
+
+        return $this;
+    }
+
+    /**
+     * Получает очередь логов
+     *
+     * @return array
+     */
+    public function getQueue(): array
+    {
+        return $this->queueLogs;
+    }
+
+    public function emergency(string $msg, array $data = [])
     {
         return $this->log('emergency', $msg, $data);
     }
 
-    public function alert(string $msg, array $data = []): bool
+    public function alert(string $msg, array $data = [])
     {
         return $this->log('alert', $msg, $data);
     }
 
-    public function critical(string $msg, array $data = []): bool
+    public function critical(string $msg, array $data = [])
     {
         return $this->log('critical', $msg, $data);
     }
 
-    public function error(string $msg, array $data = []): bool
+    public function error(string $msg, array $data = [])
     {
         return $this->log('error', $msg, $data);
     }
 
-    public function warning(string $msg, array $data = []): bool
+    public function warning(string $msg, array $data = [])
     {
         return $this->log('warning', $msg, $data);
     }
 
-    public function notice(string $msg, array $data = []): bool
+    public function notice(string $msg, array $data = [])
     {
         return $this->log('notice', $msg, $data);
     }
 
-    public function info(string $msg, array $data = []): bool
+    public function info(string $msg, array $data = [])
     {
         return $this->log('info', $msg, $data);
     }
 
-    public function debug(string $msg, array $data = []): bool
+    public function debug(string $msg, array $data = [])
     {
         return $this->log('debug', $msg, $data);
     }

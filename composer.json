@@ -2,6 +2,10 @@
     "name": "pavel-one/lara-log",
     "description": "Laravel package for remote logging service log.lara.su",
     "type": "library",
+    "keywords": [
+        "logging",
+        "remote"
+    ],
     "license": "MIT",
     "support": {
         "issues": "https://github.com/pavel-one/LaraLog/issues",
@@ -17,7 +21,9 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": "^7.2.1"
+        "php": "^7.2",
+        "guzzlehttp/guzzle": "^6.3",
+        "ext-curl": "*"
     },
     "autoload": {
         "psr-4": {
