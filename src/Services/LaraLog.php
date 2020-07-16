@@ -182,4 +182,44 @@ class LaraLog
     {
         return $this->log('debug', $msg, $data);
     }
+
+    public function emergencySync(string $msg, array $data = [])
+    {
+        return $this->log('emergency', $msg, $data)->send();
+    }
+
+    public function alertSync(string $msg, array $data = [])
+    {
+        return $this->log('alert', $msg, $data)->send();
+    }
+
+    public function criticalSync(string $msg, array $data = [])
+    {
+        return $this->log('critical', $msg, $data)->send();
+    }
+
+    public function errorSync(string $msg, array $data = [])
+    {
+        return $this->log('error', $msg, $data)->send();
+    }
+
+    public function warningSync(string $msg, array $data = [])
+    {
+        return $this->log('warning', $msg, $data)->send();
+    }
+
+    public function noticeSync(string $msg, array $data = [])
+    {
+        return $this->log('notice', $msg, $data)->send();
+    }
+
+    public function infoSync(string $msg, array $data = [])
+    {
+        return $this->log('info', $msg, $data)->send();
+    }
+
+    public function debugSync(string $msg, array $data = [])
+    {
+        return $this->log('debug', $msg, $data)->send();
+    }
 }
