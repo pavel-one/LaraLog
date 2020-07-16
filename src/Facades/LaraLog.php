@@ -26,9 +26,9 @@ class LaraLog
      * @param string $msg - сообщение
      * @param array $data - массив с данными
      *
-     * @return Service
+     * @return Service|\Psr\Http\Message\ResponseInterface|null
      */
-    public static function log(string $level, string $msg, array $data): Service
+    public static function log(string $level, string $msg, array $data)
     {
         /** @var Service $service */
         $service = App::get('LaraLog');

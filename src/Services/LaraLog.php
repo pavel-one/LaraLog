@@ -80,6 +80,7 @@ class LaraLog
             //TODO: Сделать обработку
         }
 
+        $this->refresh();
         return $request;
     }
 
@@ -128,6 +129,18 @@ class LaraLog
     public function getQueue(): array
     {
         return $this->queueLogs;
+    }
+
+    /**
+     * Сбрасывает очередь логов
+     *
+     * @return LaraLog
+     */
+    public function refresh(): self
+    {
+        $this->queueLogs = [];
+
+        return $this;
     }
 
     public function emergency(string $msg, array $data = [])
