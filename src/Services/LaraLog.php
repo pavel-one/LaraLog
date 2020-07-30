@@ -98,6 +98,7 @@ class LaraLog
             'message' => $msg,
             'level' => $level,
             'channel' => $this->channel,
+            'time' => date('Y-m-d H:i:s'),
             'data' => $data
         ]);
 
