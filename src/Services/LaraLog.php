@@ -39,7 +39,8 @@ class LaraLog
         $this->queueLogs = [];
 
         $this->client = new Client([
-            'base_uri' => $this->url
+            'base_uri' => $this->url,
+            'verify' => false
         ]);
     }
 
